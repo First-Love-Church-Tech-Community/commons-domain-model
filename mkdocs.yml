@@ -1,0 +1,49 @@
+site_name: Commons Domain Model
+site_description: Canonical Commons domain model and ubiquitous language
+site_url: https://first-love-church-tech-community.github.io/commons-domain-model/
+docs_dir: docs
+site_dir: _site
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Domain Model: index.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - https://unpkg.com/mermaid@11.6.0/dist/mermaid.min.js
+  - javascripts/mermaid.js
+
+copyright: Commons · First Love Church Tech Community
