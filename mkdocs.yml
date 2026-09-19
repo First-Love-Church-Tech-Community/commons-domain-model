@@ -44,6 +44,6 @@ markdown_extensions:
 
 
 extra_javascript:
-  - https://unpkg.com/mermaid@11.6.0/dist/mermaid.min.js
+  - javascripts/mermaid.min.js
 
 copyright: Commons · First Love Church Tech Community
