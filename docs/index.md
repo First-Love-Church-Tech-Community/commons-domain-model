@@ -82,6 +82,8 @@ A Program uses `REQUEST_ONLY` booking mode because the customer's initial requir
 
 A camp is a specific kind of Program. The requested or confirmed Program is the coordinating aggregate, not one oversized Service Request.
 
+Only after the requester confirms the concrete Program Plan does Commons create an Enrollment Invitation. The invitation may be shared as a link, QR code or code and lets participants identify themselves and enrol in that confirmed Program.
+
 A confirmed Program may contain:
 
 - agreed dates and organizer;
@@ -148,6 +150,22 @@ Program components may target:
 - selected named Participants;
 - an unnamed quantity before the final roster is known;
 - external guests.
+
+### Enrollment Invitation and Participant Enrollment
+
+An Enrollment Invitation is the controlled entry point through which a Person joins a confirmed Program. It may be represented as a shareable link, QR code or code. It is created only after the requester has confirmed the concrete Program Plan; a draft, rejected, planning, proposed or declined Program must not expose an active enrollment entry point.
+
+Participant Enrollment records that a Person has joined a Program. Enrollment is not an Experience Booking, Service Request, payment or attendance record. When a participant identifies themselves, Commons creates or reuses the Person's Visit for the Program and links the Participant Enrollment to that Visit.
+
+Enrollment may:
+
+- add the Participant to the Program roster;
+- assign default or selected Participant Groups;
+- grant organizer-funded entitlements included in the confirmed Program Plan;
+- expose optional Experiences or services that the Participant may choose separately; and
+- preserve the confirmed plan and the participant's choices for audit.
+
+Organizer-funded inclusions must not charge the participant again. Commons does not collect attendee contributions toward the organizer's Program payment. Provider-owned commerce, including food where Patatte is the owner, remains outside the Commons enrollment transaction.
 
 ### Activity Definition
 
@@ -470,9 +488,19 @@ flowchart TB
     Plan --> Decision{"Requester decision"}
     Decision -->|Confirm| Confirmed["Confirmed Program"]
     Decision -->|Decline| Declined["Declined / Cancelled"]
+    Confirmed --> Invitation["Enrollment invitation<br/>link / QR / code"]
+    Invitation --> Identify["Participant identifies"]
+    Identify --> Visit["Create or reuse Visit"]
+    Visit --> Enrolment["Participant Enrollment"]
 ```
 
 `REQUEST_ONLY` does not imply eventual approval. Front Desk may reject the initial request, or planning may end without a viable plan. Only a concrete plan that the requester accepts becomes a confirmed Program.
+
+### Post-confirmation Program enrollment
+
+The Enrollment Invitation belongs to the confirmed Program and provides the public entry point; it does not itself make someone a Participant. After identification, Commons creates or reuses the Person's Program Visit, records one Participant Enrollment, applies the appropriate Participant Groups and resolves the entitlements funded by the organizer's confirmed plan.
+
+Included Experiences and services are exposed as entitlements or access grants, not as a second participant charge. Optional participant choices remain distinct transactions or selections according to the component's policy. Enrollment, booking, attendance, service usage and payment remain separate measures.
 
 ### Component lifecycles
 
@@ -530,6 +558,11 @@ Current examples:
 20. External-system ownership must not be obscured by Commons orchestration.
 21. Payment confirmation must be server-authoritative and idempotent.
 22. A consolidated Program or Event financial view must retain allocations to its component transactions.
+23. An Enrollment Invitation may be created only for a confirmed Program after the requester accepts its concrete Program Plan.
+24. Participant Enrollment links a Person to a Program and creates or reuses that Person's Program Visit; it is not a booking, request, payment or attendance record.
+25. Organizer-funded Program inclusions become participant entitlements and must not charge the participant again.
+26. Commons does not collect attendee contributions toward the organizer's Program payment.
+27. Enrollment, Participant Group membership, entitlement, optional selection, attendance and service usage remain independently auditable.
 
 ## Naming guidance
 
@@ -544,6 +577,9 @@ Use these terms consistently:
 - “experience” for what a participant does;
 - “event” for a gathering or occasion;
 - “program” for a structured, collaboratively planned participant journey;
+- “enrollment invitation” for the confirmed Program's shareable join entry point;
+- “participant enrollment” for a Person joining a Program;
+- “entitlement” for organizer-funded or otherwise authorized access without another charge;
 - “task” for internal work;
 - “fulfilment” for delivered outcome.
 
@@ -553,6 +589,9 @@ Avoid:
 - calling a physical Facility or an Event an Experience;
 - treating a Camp or Program as one Service Request;
 - describing `REQUEST_ONLY` as guaranteed approval;
+- creating an enrollment invitation before the Program Plan is confirmed;
+- treating enrollment as a booking, payment or attendance record;
+- charging a participant again for an organizer-funded inclusion;
 - creating a Service Offering for every individual room or vehicle;
 - treating operational Tasks as customer-facing requests;
 - copying provider-owned commerce records into Commons as if Commons owned them.
